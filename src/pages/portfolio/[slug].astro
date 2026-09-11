@@ -1,0 +1,825 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { PROJECTS } from "../../data/projects";
+
+export function getStaticPaths() {
+  return PROJECTS.map((project) => ({
+    params: {
+      slug: project.slug || project.id,
+    },
+    props: {
+      project,
+    },
+  }));
+}
+
+const { project } = Astro.props;
+
+const images =
+  project.gallery && project.gallery.length > 0
+    ? project.gallery.map((img) => img.src || img)
+    : [project.heroImage.src || project.heroImage];
+
+const relatedProjects = PROJECTS
+  .filter((p) => p.id !== project.id)
+  .slice(0, 3);
+
+const whatsappMessage =
+  "Halo Garis AS Studio, saya ingin berkonsultasi mengenai rancangan arsitektur dan interior rumah tinggal modern bernuansa kayu. Apakah ada waktu luang untuk berdiskusi?";
+
+const whatsappUrl =
+  `https://wa.me/6281234567890?text=${encodeURIComponent(whatsappMessage)}`;
+---
+
+<Layout title={project.title}>
+  <div
+    id="project-detail-page"
+    class="pt-24 pb-24 bg-white text-neutral-900 min-h-screen"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Navigation -->
+      <div
+        class="flex items-center justify-between py-4 mb-6 border-b border-neutral-100"
+      >
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-700 hover:text-black transition-colors"
+        >
+          <span aria-hidden="true">←</span>
+          <span>Kembali ke Portofolio</span>
+        </a>
+
+        <button
+          id="share-button"
+          type="button"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-neutral-600 hover:text-black border border-neutral-200 rounded-xs transition-colors"
+        >
+          <span id="share-icon">↗</span>
+          <span id="share-text">Bagikan</span>
+        </button>
+      </div>
+
+      <!-- Title -->
+      <div class="mb-8">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+
+          <span
+            class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2644] bg-neutral-100 px-2.5 py-1 rounded-xs"
+          >
+            {project.categoryTag || project.category}
+          </span>
+
+          <span class="text-[11px] text-neutral-400 font-semibold">
+            •
+          </span>
+
+          <span
+            class="text-[11px] text-neutral-500 font-semibold uppercase tracking-wider"
+          >
+            {project.location}
+          </span>
+
+        </div>
+
+        <h1
+          id="project-detail-title"
+          class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 font-display tracking-tight"
+        >
+          {project.title}
+        </h1>
+      </div>
+
+      <!-- Main Content -->
+      <div
+        class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+      >
+
+        <!-- LEFT -->
+        <div class="lg:col-span-7 space-y-4">
+
+          <!-- Main Image -->
+          <div
+            id="main-image-container"
+            class="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden rounded-xs group shadow-sm"
+          >
+
+            <img
+              id="main-image"
+              src={images[0].src || images[0]}
+              alt={project.title}
+              class="w-full h-full object-cover object-center cursor-pointer transition-opacity duration-300"
+            />
+
+            <!-- Previous -->
+            {
+              images.length > 1 && (
+                <button
+                  id="prev-image"
+                  type="button"
+                  class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black text-white rounded-xs flex items-center justify-center backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Gambar sebelumnya"
+                >
+                  ‹
+                </button>
+              )
+            }
+
+            <!-- Next -->
+            {
+              images.length > 1 && (
+                <button
+                  id="next-image"
+                  type="button"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black text-white rounded-xs flex items-center justify-center backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Gambar berikutnya"
+                >
+                  ›
+                </button>
+              )
+            }
+
+            <!-- Counter -->
+            <div
+              class="absolute top-4 left-4 px-2.5 py-1 bg-black/70 backdrop-blur-xs text-white text-[11px] font-bold rounded-xs flex items-center gap-1.5"
+            >
+              <span>▧</span>
+              <span id="image-counter">
+                1 / {images.length} Foto
+              </span>
+            </div>
+
+            <!-- Fullscreen -->
+            <button
+              id="open-lightbox"
+              type="button"
+              class="absolute bottom-4 right-4 p-2.5 bg-black/70 hover:bg-black text-white rounded-xs backdrop-blur-xs flex items-center gap-1.5 text-xs font-semibold opacity-90 group-hover:opacity-100 transition-opacity"
+            >
+              <span>⛶</span>
+              <span class="hidden sm:inline">Perbesar</span>
+            </button>
+
+          </div>
+
+          <!-- Thumbnails -->
+          {
+            images.length > 1 && (
+              <div class="space-y-2">
+
+                <p class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                  PILIHAN SUDUT & DETAIL ({images.length} FOTO)
+                </p>
+
+                <div class="grid grid-cols-5 sm:grid-cols-6 gap-2">
+                  {images.map((img, idx) => (
+                    <button
+                      type="button"
+                      data-thumbnail-index={idx}
+                      class:list={[
+                        "relative aspect-[4/3] w-full overflow-hidden rounded-xs border-2 transition-all",
+                        idx === 0
+                          ? "border-[#1a2644] ring-2 ring-[#1a2644]/20"
+                          : "border-transparent opacity-65 hover:opacity-100",
+                      ]}
+                    >
+                      <img
+                        src={img.src || img}
+                        alt={`${project.title} ${idx + 1}`}
+                        class="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+              </div>
+            )
+          }
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="lg:col-span-5 space-y-8">
+
+          <!-- Metadata -->
+          <div
+            class="space-y-4 text-sm divide-y divide-neutral-200/80 bg-neutral-50 p-6 rounded-xs border border-neutral-200/80"
+          >
+
+            <div class="pt-1 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                LOKASI
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.location}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                TAHUN
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.year}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                TIPE
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.type}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                LUAS BANGUNAN
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.buildingArea || "-"}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                LUAS LAHAN
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.landArea || "-"}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                KATEGORI
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.category}
+              </span>
+            </div>
+
+            <div class="pt-3 flex items-baseline justify-between gap-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                DEVELOPER / KLIEN
+              </span>
+
+              <span class="font-semibold text-neutral-900 text-right">
+                {project.client}
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Actions -->
+          <div class="space-y-3 pt-2">
+
+            <!-- Konsultasi -->
+            <a
+              id="project-tanya-btn"
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full py-3.5 px-6 border-2 border-[#121b30] hover:bg-neutral-100 text-[#121b30] font-extrabold text-xs uppercase tracking-[0.25em] rounded-xs transition-colors text-center block"
+            >
+              KONSULTASI DESAIN
+            </a>
+
+            <!-- WhatsApp -->
+            <a
+              id="project-whatsapp-btn"
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full py-3.5 px-6 bg-[#121b30] hover:bg-black text-white font-extrabold text-xs uppercase tracking-[0.25em] rounded-xs transition-colors flex items-center justify-center gap-2.5 shadow-xs"
+            >
+              <span class="text-base">◉</span>
+              <span>WHATSAPP STUDIO</span>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Gallery -->
+      {
+        images.length > 1 && (
+          <div class="mt-16 pt-12 border-t border-neutral-200">
+
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
+
+              <div>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#1a2644]">
+                  EKSPLORASI DETAIL VISUAL
+                </span>
+
+                <h3 class="text-2xl sm:text-3xl font-extrabold font-display text-neutral-900 mt-1">
+                  Galeri Foto & Sudut Ruang {project.title}
+                </h3>
+              </div>
+
+              <p class="text-xs sm:text-sm text-neutral-500">
+                Klik gambar untuk melihat dalam resolusi penuh
+              </p>
+
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+              {images.map((img, idx) => (
+                <button
+                  type="button"
+                  data-gallery-index={idx}
+                  class="group relative aspect-[4/3] bg-neutral-100 rounded-xs overflow-hidden cursor-pointer shadow-xs hover:shadow-md transition-all text-left"
+                >
+
+                  <img
+                    src={img.src || img}
+                    alt={`${project.title} - Foto ${idx + 1}`}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-4 text-white"
+                  >
+                    <span class="text-xs font-bold uppercase tracking-wider">
+                      Foto {idx + 1} of {images.length}
+                    </span>
+
+                    <span
+                      class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center"
+                    >
+                      ◉
+                    </span>
+                  </div>
+
+                </button>
+              ))}
+
+            </div>
+
+          </div>
+        )
+      }
+
+      <!-- Description -->
+      <div
+        class="mt-16 pt-12 border-t border-neutral-200 grid grid-cols-1 lg:grid-cols-12 gap-10"
+      >
+
+        <div class="lg:col-span-7 space-y-6">
+
+          <div class="space-y-2">
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#1a2644]">
+              DESKRIPSI ARSITEKTUR & KAYU
+            </span>
+
+            <h3 class="text-2xl font-bold font-display text-neutral-900">
+              Filosofi & Konsep Desain Rumah
+            </h3>
+          </div>
+
+          <p class="text-base text-neutral-700 leading-relaxed">
+            {project.description}
+          </p>
+
+          <div class="space-y-3 pt-4">
+
+            <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-900">
+              Poin Kunci Konsep Rumah
+            </h4>
+
+            <ul class="space-y-2.5">
+              {project.conceptPoints.map((point) => (
+                <li class="flex items-start gap-3 text-sm text-neutral-700">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#1a2644] mt-2 shrink-0"></span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+
+          </div>
+
+        </div>
+
+        <!-- Features -->
+        <div
+          class="lg:col-span-5 bg-neutral-50 p-6 sm:p-8 rounded-xs border border-neutral-200/70 space-y-6"
+        >
+
+          <h4
+            class="text-sm font-bold uppercase tracking-wider text-neutral-900 border-b border-neutral-200 pb-3"
+          >
+            Fasilitas & Fitur Material Kayu
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            {project.features.map((feat) => (
+              <div
+                class="flex items-center gap-2 text-xs font-semibold text-neutral-800 bg-white p-2.5 rounded-xs border border-neutral-200/60"
+              >
+                <span class="text-amber-600">✦</span>
+                <span>{feat}</span>
+              </div>
+            ))}
+
+          </div>
+
+          <div class="pt-4 border-t border-neutral-200 space-y-2">
+
+            <p class="text-xs text-neutral-500 leading-relaxed">
+              Ingin mendiskusikan konsep rumah tinggal kayu modern serupa
+              untuk kebutuhan lahan Anda?
+            </p>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-xs font-bold text-neutral-950 underline underline-offset-4 hover:text-neutral-700 uppercase tracking-wider flex items-center gap-1.5"
+            >
+              <span>
+                Konsultasikan dengan Arsitek Garis AS Studio
+              </span>
+
+              <span>→</span>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Related Projects -->
+      {
+        relatedProjects.length > 0 && (
+          <div class="mt-20 pt-14 border-t border-neutral-200">
+
+            <div class="flex items-center justify-between mb-8">
+
+              <div>
+                <p class="text-xs font-bold tracking-[0.2em] text-[#1a2644] uppercase">
+                  EKSPLORASI LAINNYA
+                </p>
+
+                <h3 class="text-2xl font-bold font-display text-neutral-900">
+                  Proyek Rumah Terkait
+                </h3>
+              </div>
+
+              <a
+                href="/portfolio"
+                class="text-xs font-bold uppercase tracking-wider text-neutral-600 hover:text-black"
+              >
+                Lihat Semua
+              </a>
+
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+              {relatedProjects.map((rel) => (
+                <a
+                  href={`/portfolio/${rel.slug || rel.id}`}
+                  class="group bg-neutral-100 rounded-xs overflow-hidden block"
+                >
+
+                  <div class="relative aspect-[4/3] overflow-hidden">
+
+                    <img
+                      src={rel.heroImage.src || rel.heroImage}
+                      alt={rel.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+
+                    <div
+                      class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"
+                    ></div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+
+                      <h4 class="font-bold text-base uppercase font-display">
+                        {rel.title}
+                      </h4>
+
+                      <p class="text-xs text-neutral-300">
+                        {rel.location} • {rel.year}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </a>
+              ))}
+
+            </div>
+
+          </div>
+        )
+      }
+
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div
+      id="lightbox"
+      class="fixed inset-0 z-50 bg-black/95 hidden items-center justify-center p-4 sm:p-8"
+    >
+
+      <!-- Close -->
+      <button
+        id="close-lightbox"
+        type="button"
+        class="absolute top-6 right-6 p-2.5 text-white/80 hover:text-white bg-neutral-900/80 hover:bg-neutral-900 rounded-full z-10 text-xl"
+        aria-label="Tutup preview"
+      >
+        ×
+      </button>
+
+      <!-- Previous -->
+      {
+        images.length > 1 && (
+          <button
+            id="lightbox-prev"
+            type="button"
+            class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 p-3 text-white bg-neutral-900/80 hover:bg-neutral-900 rounded-full z-10 text-3xl"
+            aria-label="Foto sebelumnya"
+          >
+            ‹
+          </button>
+        )
+      }
+
+      <!-- Next -->
+      {
+        images.length > 1 && (
+          <button
+            id="lightbox-next"
+            type="button"
+            class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 p-3 text-white bg-neutral-900/80 hover:bg-neutral-900 rounded-full z-10 text-3xl"
+            aria-label="Foto berikutnya"
+          >
+            ›
+          </button>
+        )
+      }
+
+      <!-- Image -->
+      <div
+        id="lightbox-content"
+        class="relative max-w-5xl max-h-[85vh] flex flex-col items-center justify-center"
+      >
+
+        <img
+          id="lightbox-image"
+          src={images[0].src || images[0]}
+          alt={project.title}
+          class="max-w-full max-h-[75vh] object-contain rounded-xs shadow-2xl"
+        />
+
+        <div class="mt-4 text-center text-white text-xs sm:text-sm font-medium">
+          <span>{project.title}</span>
+          —
+          Foto <span id="lightbox-counter">1</span> dari {images.length}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Client-side interaction -->
+  <script define:vars={{ images }}>
+    const imageList = images;
+
+    let activeIndex = 0;
+
+    const mainImage = document.querySelector("#main-image");
+    const counter = document.querySelector("#image-counter");
+
+    const lightbox = document.querySelector("#lightbox");
+    const lightboxImage = document.querySelector("#lightbox-image");
+    const lightboxCounter = document.querySelector("#lightbox-counter");
+
+    const updateImage = (index) => {
+      activeIndex = index;
+
+      if (mainImage) {
+        mainImage.src = imageList[activeIndex];
+      }
+
+      if (counter) {
+        counter.textContent =
+          `${activeIndex + 1} / ${imageList.length} Foto`;
+      }
+
+      if (lightboxImage) {
+        lightboxImage.src = imageList[activeIndex];
+      }
+
+      if (lightboxCounter) {
+        lightboxCounter.textContent =
+          String(activeIndex + 1);
+      }
+
+      document.querySelectorAll("[data-thumbnail-index]")
+        .forEach((thumbnail) => {
+          const thumbnailIndex =
+            Number(thumbnail.dataset.thumbnailIndex);
+
+          thumbnail.classList.toggle(
+            "border-[#1a2644]",
+            thumbnailIndex === activeIndex
+          );
+
+          thumbnail.classList.toggle(
+            "ring-2",
+            thumbnailIndex === activeIndex
+          );
+
+          thumbnail.classList.toggle(
+            "ring-[#1a2644]/20",
+            thumbnailIndex === activeIndex
+          );
+
+          thumbnail.classList.toggle(
+            "opacity-65",
+            thumbnailIndex !== activeIndex
+          );
+        });
+    };
+
+    const nextImage = () => {
+      const next =
+        activeIndex === imageList.length - 1
+          ? 0
+          : activeIndex + 1;
+
+      updateImage(next);
+    };
+
+    const prevImage = () => {
+      const previous =
+        activeIndex === 0
+          ? imageList.length - 1
+          : activeIndex - 1;
+
+      updateImage(previous);
+    };
+
+    const openLightbox = () => {
+      if (!lightbox) return;
+
+      updateImage(activeIndex);
+
+      lightbox.classList.remove("hidden");
+      lightbox.classList.add("flex");
+
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeLightbox = () => {
+      if (!lightbox) return;
+
+      lightbox.classList.add("hidden");
+      lightbox.classList.remove("flex");
+
+      document.body.style.overflow = "";
+    };
+
+    // Main image
+    mainImage?.addEventListener("click", openLightbox);
+
+    // Main controls
+    document
+      .querySelector("#next-image")
+      ?.addEventListener("click", nextImage);
+
+    document
+      .querySelector("#prev-image")
+      ?.addEventListener("click", prevImage);
+
+    // Lightbox
+    document
+      .querySelector("#open-lightbox")
+      ?.addEventListener("click", openLightbox);
+
+    document
+      .querySelector("#close-lightbox")
+      ?.addEventListener("click", closeLightbox);
+
+    document
+      .querySelector("#lightbox-next")
+      ?.addEventListener("click", nextImage);
+
+    document
+      .querySelector("#lightbox-prev")
+      ?.addEventListener("click", prevImage);
+
+    // Thumbnail
+    document
+      .querySelectorAll("[data-thumbnail-index]")
+      .forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+          updateImage(
+            Number(thumbnail.dataset.thumbnailIndex)
+          );
+        });
+      });
+
+    // Gallery
+    document
+      .querySelectorAll("[data-gallery-index]")
+      .forEach((galleryItem) => {
+        galleryItem.addEventListener("click", () => {
+          updateImage(
+            Number(galleryItem.dataset.galleryIndex)
+          );
+
+          openLightbox();
+        });
+      });
+
+    // Click background to close
+    lightbox?.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard
+    document.addEventListener("keydown", (event) => {
+      if (!lightbox || lightbox.classList.contains("hidden")) {
+        return;
+      }
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+
+      if (event.key === "ArrowRight") {
+        nextImage();
+      }
+
+      if (event.key === "ArrowLeft") {
+        prevImage();
+      }
+    });
+
+    // Share
+    document
+      .querySelector("#share-button")
+      ?.addEventListener("click", async () => {
+
+        const shareText =
+          document.querySelector("#share-text");
+
+        const shareIcon =
+          document.querySelector("#share-icon");
+
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: document.title,
+              url: window.location.href,
+            });
+          } else {
+            await navigator.clipboard.writeText(
+              window.location.href
+            );
+
+            if (shareText) {
+              shareText.textContent = "Tersalin";
+            }
+
+            if (shareIcon) {
+              shareIcon.textContent = "✓";
+            }
+
+            setTimeout(() => {
+              if (shareText) {
+                shareText.textContent = "Bagikan";
+              }
+
+              if (shareIcon) {
+                shareIcon.textContent = "↗";
+              }
+            }, 2000);
+          }
+        } catch (error) {
+          console.log("Share dibatalkan");
+        }
+      });
+  </script>
+</Layout>

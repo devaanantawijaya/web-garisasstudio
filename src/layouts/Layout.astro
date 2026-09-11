@@ -1,23 +1,55 @@
+---
+import "../styles/global.css";
+const brandName = "Garis As Studio";
+import { ClientRouter } from "astro:transitions";
+const { title } = Astro.props;
+import LogoGarisAsStudio from "../assets/logo garis as studio.png";
+import { ScrollToTop } from "../react-components/ScrollToTop";
+import { FloatingButtons } from "../react-components/FloatingButtons";
+const pathname = Astro.url.pathname;
+import { getImage } from "astro:assets";
+import { Navbar } from "../react-components/Navbar";
+import Footer from "../components/Footer.astro";
+
+const optimizedLogo = await getImage({
+  src: LogoGarisAsStudio,
+});
+
+const pageTitle =
+  Astro.url.pathname === "/"
+    ? `${brandName} | Jasa Arsitektur, Interior & Konstruksi`
+    : `${title} | ${brandName}`;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href={LogoGarisAsStudio.src} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <ScrollToTop pathname={pathname} client:load />
+    <Navbar
+      pathname={pathname}
+      logo={optimizedLogo.src}
+      brandName={brandName}
+      client:load
+    />
+    <slot />
+    <FloatingButtons client:load />
+    <Footer brandName={brandName} logo={optimizedLogo.src} />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>
