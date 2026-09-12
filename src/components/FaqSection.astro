@@ -1,0 +1,222 @@
+---
+const GENERAL_FAQS = [
+  {
+    id: 'faq-biaya',
+    question: 'Berapa biaya jasa desain rumah di Garis AS Studio?',
+    answer:
+      'Biaya jasa desain dihitung berdasarkan luasan bangunan (per m²) atau persentase nilai proyek, disesuaikan dengan kebutuhan paket rancangan arsitektur dan interior Anda. Konsultasi awal dan diskusi konsep denah bersifat gratis tanpa biaya komitmen.',
+    points: [
+      'Paket Desain Arsitektur (Denah, Tampak, Potongan, 3D Fasad & DED Arsitektur)',
+      'Paket Lengkap All-in (Arsitektur + Interior + Struktur/MEP + Rencana Anggaran Biaya)'
+    ]
+  },
+  {
+    id: 'faq-output',
+    question: 'Apa saja dokumen desain (output) yang akan saya terima?',
+    answer:
+      'Anda akan menerima satu bundel dokumen kerja siap bangun berstandar konstruksi profesional yang mencakup:',
+    points: [
+      'Buku Konsep Desain: Denah tata ruang 2D presisi & diagram sirkulasi udara alami',
+      'Visual 3D Fotorealistik: Render resolusi tinggi eksterior & interior siang/malam',
+      'Gambar Kerja Lengkap (DED): Gambar arsitektur, struktur pondasi/rangka, serta instalasi kelistrikan & pemipaan (MEP)',
+      'Rencana Anggaran Biaya (RAB): Estimasi volume bahan dan biaya konstruksi per pekerjaan'
+    ]
+  },
+  {
+    id: 'faq-durasi',
+    question: 'Berapa lama proses pembuatan desain rumah hingga siap bangun?',
+    answer:
+      'Rata-rata waktu perancangan berkisar antara 30 hingga 60 hari kerja, bergantung pada luas bangunan dan kecepatan feedback diskusi konsep. Proses dibagi dalam 3 tahapan terstruktur: studi zonasi denah, eksplorasi 3D render, dan finalisasi gambar kerja teknis.'
+  },
+  {
+    id: 'faq-revisi',
+    question: 'Bagaimana jika saya ingin melakukan revisi desain?',
+    answer:
+      'Kami mengutamakan kenyamanan dan kepuasan Anda. Pada tahap konsep denah 2D awal, Anda diberikan kebebasan revisi bertahap hingga denah ruang benar-benar pas. Setelah denah disepakati, baru kita lanjutkan ke pemodelan 3D dan detail gambar teknis.'
+  },
+  {
+    id: 'faq-remote',
+    question: 'Apakah bisa melayani proyek di luar kota atau luar pulau Bali?',
+    answer:
+      'Bisa. Banyak klien kami berasal dari berbagai kota di Indonesia (Jakarta, Bandung, Surabaya, Medan, dll). Seluruh proses koordinasi dapat dilakukan secara intensif via WhatsApp, Google Meet/Zoom, dan pengiriman berkas digital. Survei lahan fisik juga dapat dijadwalkan sesuai kebutuhan.'
+  },
+  {
+    id: 'faq-kayu',
+    question: 'Bagaimana menjaga ketahanan kayu terhadap rayap dan cuaca tropis?',
+    answer:
+      'Ketahanan rumah kayu modern terletak pada ketepatan spesifikasi: kami merekomendasikan kayu kelas awet dan kuat I & II (seperti Ulin Kalimantan, Bengkirai, Merbau, dan Jati TPK) yang telah diberi perlakuan anti-rayap serta coating pelindung sinar UV yang ramah lingkungan.'
+  }
+];
+
+const whatsappNumber = '6281234567890';
+
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+  'Halo Garis AS Studio, saya ingin berkonsultasi mengenai jasa desain rumah tinggal kayu modern.'
+)}`;
+---
+
+<section
+  id="faq-section"
+  class="py-20 sm:py-24 bg-white text-neutral-900 border-t border-neutral-200/80"
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center space-y-3 mb-12 sm:mb-14">
+      <p
+        class="text-xs sm:text-sm font-bold tracking-[0.25em] text-neutral-600 uppercase flex items-center justify-center gap-2"
+      >
+        <span>—</span>
+        <span>TANYA JAWAB</span>
+        <span>—</span>
+      </p>
+
+      <h2
+        id="faq-heading"
+        class="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-neutral-950 font-display leading-[1.15]"
+      >
+        Pertanyaan yang Sering Diajukan <br />
+        <span class="text-amber-800">(FAQ)</span>
+      </h2>
+
+      <p
+        class="text-sm sm:text-base text-neutral-600 max-w-2xl mx-auto font-light leading-relaxed pt-1"
+      >
+        Pertanyaan umum seputar tahapan perancangan, output gambar kerja,
+        serta estimasi biaya jasa desain arsitektur rumah kami.
+      </p>
+    </div>
+
+    <!-- FAQ List -->
+    <div class="space-y-3.5 mb-12">
+      {GENERAL_FAQS.map((faq, index) => (
+        <details
+          class="group border border-neutral-200 bg-white rounded-xs overflow-hidden transition-all duration-200 hover:border-neutral-400 open:border-neutral-900 open:bg-neutral-50/60 open:shadow-md"
+          open={index === 0}
+        >
+          <summary
+            class="list-none w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer select-none"
+          >
+            <span
+              class="text-base sm:text-lg font-bold font-display text-neutral-800 group-open:text-neutral-950"
+            >
+              {faq.question}
+            </span>
+
+            <div
+              class="w-8 h-8 rounded-xs flex items-center justify-center shrink-0 bg-neutral-100 text-neutral-700 transition-all duration-300 group-open:bg-neutral-900 group-open:text-white"
+            >
+              <!-- Chevron Down -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                class="w-4 h-4 transition-transform duration-300 group-open:rotate-180"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
+          </summary>
+
+          <div
+            class="px-5 sm:px-6 pb-6 pt-1 text-sm text-neutral-700 leading-relaxed border-t border-neutral-200/50"
+          >
+            <p class="font-normal">
+              {faq.answer}
+            </p>
+
+            {faq.points && faq.points.length > 0 && (
+              <ul class="mt-3 space-y-2 border-l-2 border-amber-600/40 pl-3">
+                {faq.points.map((point) => (
+                  <li
+                    class="flex items-start gap-2 text-xs sm:text-sm text-neutral-700"
+                  >
+                    <!-- Check Circle -->
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"
+                      aria-hidden="true"
+                    >
+                      <path d="m9 12 2 2 4-4" />
+                      <circle cx="12" cy="12" r="9" />
+                    </svg>
+
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Still Have Questions -->
+    <div
+      class="bg-[#f5f2eb] border border-[#e5ded0] rounded-xs p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-xs"
+    >
+      <div class="space-y-1">
+        <h3
+          class="text-base sm:text-lg font-bold font-display text-neutral-950"
+        >
+          Punya Pertanyaan Khusus Seputar Lahan atau Anggaran Anda?
+        </h3>
+
+        <p class="text-xs sm:text-sm text-neutral-600">
+          Konsultasikan rencana denah dan kebutuhan rumah Anda langsung
+          bersama arsitek kami melalui WhatsApp.
+        </p>
+      </div>
+
+      <a
+        id="faq-ctwa-direct-btn"
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-6 py-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-neutral-950 font-extrabold text-xs uppercase tracking-wider rounded-xs transition-all duration-200 flex items-center gap-2.5 shrink-0 shadow-md hover:shadow-lg"
+      >
+        <!-- WhatsApp / Message Icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="w-4 h-4"
+          aria-hidden="true"
+        >
+          <path
+            d="M21 11.5a8.38 8.38 0 0 1-9 8.5 8.5 8.5 0 0 1-4-.9L3 20l1.1-4.8a8.5 8.5 0 1 1 16.9-3.7Z"
+          />
+          <path d="M8.5 9.5c.5 1.5 1.5 2.5 3 3" />
+        </svg>
+
+        <span>TANYA ARSITEK VIA WA</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const faqs = document.querySelectorAll('#faq-section details');
+
+  faqs.forEach((faq) => {
+    faq.addEventListener('toggle', () => {
+      if (faq.open) {
+        faqs.forEach((otherFaq) => {
+          if (otherFaq !== faq) {
+            otherFaq.removeAttribute('open');
+          }
+        });
+      }
+    });
+  });
+</script>
