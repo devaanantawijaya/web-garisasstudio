@@ -216,120 +216,111 @@ import { CATEGORIES, PROJECTS } from "../../data/projects";
 </Layout>
 
 <script>
-  const searchInput =
-    document.querySelector("#portfolio-search") as HTMLInputElement;
+  // Bungkus seluruh kode di dalam event astro:page-load
+  document.addEventListener("astro:page-load", () => {
+    
+    const searchInput = document.querySelector("#portfolio-search") as HTMLInputElement;
+    
+    // Safety check: Jika elemen tidak ada (berada di halaman lain), hentikan eksekusi script
+    if (!searchInput) return; 
 
-  const projectCards =
-    Array.from(document.querySelectorAll(".project-card")) as HTMLElement[];
+    const projectCards = Array.from(document.querySelectorAll(".project-card")) as HTMLElement[];
+    const categoryButtons = Array.from(document.querySelectorAll(".portfolio-category")) as HTMLElement[];
+    const projectCount = document.querySelector("#project-count") as HTMLElement;
+    const projectsGrid = document.querySelector("#projects-grid") as HTMLElement;
+    const emptyState = document.querySelector("#empty-state") as HTMLElement;
+    const resetButton = document.querySelector("#reset-filter") as HTMLButtonElement;
 
-  const categoryButtons =
-    Array.from(document.querySelectorAll(".portfolio-category")) as HTMLElement[];
+    let selectedCategory = "KARYA PILIHAN";
 
-  const projectCount =
-    document.querySelector("#project-count") as HTMLElement;
+    function filterProjects() {
+      const search = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
 
-  const projectsGrid =
-    document.querySelector("#projects-grid") as HTMLElement;
+      projectCards.forEach((card) => {
+        const title = card.dataset.title?.toLowerCase() || "";
+        const location = card.dataset.location?.toLowerCase() || "";
+        const category = card.dataset.category?.toLowerCase() || "";
+        const categories = card.dataset.categories?.toLowerCase() || "";
+        const client = card.dataset.client?.toLowerCase() || "";
 
-  const emptyState =
-    document.querySelector("#empty-state") as HTMLElement;
+        const matchCategory =
+          selectedCategory === "KARYA PILIHAN" ||
+          categories.includes(selectedCategory.toLowerCase());
 
-  const resetButton =
-    document.querySelector("#reset-filter") as HTMLButtonElement;
+        const matchSearch =
+          title.includes(search) ||
+          location.includes(search) ||
+          category.includes(search) ||
+          client.includes(search);
 
-  let selectedCategory = "KARYA PILIHAN";
+        const show = matchCategory && matchSearch;
 
-  function filterProjects() {
-    const search = searchInput.value.toLowerCase().trim();
+        card.classList.toggle("hidden", !show);
 
-    let visibleCount = 0;
-
-    projectCards.forEach((card) => {
-      const title = card.dataset.title?.toLowerCase() || "";
-      const location = card.dataset.location?.toLowerCase() || "";
-      const category = card.dataset.category?.toLowerCase() || "";
-      const categories = card.dataset.categories?.toLowerCase() || "";
-      const client = card.dataset.client?.toLowerCase() || "";
-
-      const matchCategory =
-        selectedCategory === "KARYA PILIHAN" ||
-        categories.includes(selectedCategory.toLowerCase());
-
-      const matchSearch =
-        title.includes(search) ||
-        location.includes(search) ||
-        category.includes(search) ||
-        client.includes(search);
-
-      const show = matchCategory && matchSearch;
-
-      card.classList.toggle("hidden", !show);
-
-      if (show) {
-        visibleCount++;
-      }
-    });
-
-    projectCount.textContent = visibleCount.toString();
-
-    if (visibleCount === 0) {
-      projectsGrid.classList.add("hidden");
-      emptyState.classList.remove("hidden");
-    } else {
-      projectsGrid.classList.remove("hidden");
-      emptyState.classList.add("hidden");
-    }
-  }
-
-  categoryButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      selectedCategory =
-        button.dataset.category || "KARYA PILIHAN";
-
-      categoryButtons.forEach((item) => {
-        item.classList.remove("text-neutral-950", "active");
-        item.classList.add("text-neutral-500");
-
-        const indicator =
-          item.querySelector(".category-indicator");
-
-        indicator?.classList.add("hidden");
-        indicator?.classList.remove("block");
+        if (show) {
+          visibleCount++;
+        }
       });
 
-      button.classList.remove("text-neutral-500");
-      button.classList.add("text-neutral-950", "active");
+      if (projectCount) {
+        projectCount.textContent = visibleCount.toString();
+      }
 
-      const indicator =
-        button.querySelector(".category-indicator");
+      if (visibleCount === 0) {
+        projectsGrid?.classList.add("hidden");
+        emptyState?.classList.remove("hidden");
+      } else {
+        projectsGrid?.classList.remove("hidden");
+        emptyState?.classList.add("hidden");
+      }
+    }
 
-      indicator?.classList.remove("hidden");
-      indicator?.classList.add("block");
-
-      filterProjects();
-    });
-  });
-
-  searchInput.addEventListener("input", filterProjects);
-
-  resetButton.addEventListener("click", () => {
-    selectedCategory = "KARYA PILIHAN";
-    searchInput.value = "";
-
+    // Attach Event Listeners
     categoryButtons.forEach((button) => {
-      const isDefault =
-        button.dataset.category === "KARYA PILIHAN";
+      button.addEventListener("click", () => {
+        selectedCategory = button.dataset.category || "KARYA PILIHAN";
 
-      button.classList.toggle("text-neutral-950", isDefault);
-      button.classList.toggle("text-neutral-500", !isDefault);
+        categoryButtons.forEach((item) => {
+          item.classList.remove("text-neutral-950", "active");
+          item.classList.add("text-neutral-500");
 
-      const indicator =
-        button.querySelector(".category-indicator");
+          const indicator = item.querySelector(".category-indicator");
+          indicator?.classList.add("hidden");
+          indicator?.classList.remove("block");
+        });
 
-      indicator?.classList.toggle("hidden", !isDefault);
-      indicator?.classList.toggle("block", isDefault);
+        button.classList.remove("text-neutral-500");
+        button.classList.add("text-neutral-950", "active");
+
+        const indicator = button.querySelector(".category-indicator");
+        indicator?.classList.remove("hidden");
+        indicator?.classList.add("block");
+
+        filterProjects();
+      });
     });
 
-    filterProjects();
+    searchInput.addEventListener("input", filterProjects);
+
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        selectedCategory = "KARYA PILIHAN";
+        searchInput.value = "";
+
+        categoryButtons.forEach((button) => {
+          const isDefault = button.dataset.category === "KARYA PILIHAN";
+
+          button.classList.toggle("text-neutral-950", isDefault);
+          button.classList.toggle("text-neutral-500", !isDefault);
+
+          const indicator = button.querySelector(".category-indicator");
+          indicator?.classList.toggle("hidden", !isDefault);
+          indicator?.classList.toggle("block", isDefault);
+        });
+
+        filterProjects();
+      });
+    }
   });
 </script>
