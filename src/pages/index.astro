@@ -1,6 +1,9 @@
 ---
 import ConsultationSection from "../components/ConsultationSection.astro";
+import KeunggulanSection from "../components/KeunggulanSection.astro";
 import ProyekPilihan from "../components/ProyekPilihan.astro";
+import TestimoniSection from "../components/TestimoniSection.astro";
+import FaqSection from "../components/FaqSection.astro";
 import { PROJECTS } from "../data/projects";
 import Layout from "../layouts/Layout.astro";
 import { HeroCarousel } from "../react-components/HeroCarousel";
@@ -8,6 +11,9 @@ import { HeroCarousel } from "../react-components/HeroCarousel";
 
 <Layout>
   <HeroCarousel projects={PROJECTS} client:load />
+  <KeunggulanSection />
   <ProyekPilihan projects={PROJECTS} />
+  <TestimoniSection />
+  <FaqSection />
   <ConsultationSection />
 </Layout>
