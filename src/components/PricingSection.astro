@@ -1,0 +1,380 @@
+---
+const PRICING_TIERS = [
+  {
+    id: 'arsitektur',
+    name: 'Paket Desain Arsitektur',
+    badge: 'Konsep & Fasad',
+    popular: false,
+    pricePerMeter: 'Rp 100.000',
+    unit: '/ m² luas bangunan',
+    description:
+      'Pilihan tepat untuk Anda yang memerlukan tata ruang optimal, bentuk fasad modern, dan panduan visual awal yang jelas.',
+    deliverables: [
+      'Studi zonasi ruang & sirkulasi udara tropis',
+      'Denah tata ruang 2D presisi skala terukur',
+      'Visualisasi 3D Fasad Eksterior fotorealistik',
+      'Gambar tampak depan, samping & potongan dasar',
+      'Saran pemilihan spesifikasi material kayu',
+      'Konsultasi & revisi denah bertahap'
+    ],
+    recommendedFor:
+      'Kebutuhan izin konsep, renovasi fasad, atau eksplorasi awal tata ruang.',
+    ctaText: 'PILIH PAKET ARSITEKTUR',
+    waMessage:
+      'Halo Garis AS Studio, saya tertarik untuk konsultasi Paket Desain Arsitektur (Rp 100.000/m²). Bisa dibantu hitungkan estimasi untuk luas bangunan saya?'
+  },
+
+  {
+    id: 'komplit-ded',
+    name: 'Paket Komplit Siap Bangun (DED)',
+    badge: 'Paling Banyak Dipilih',
+    popular: true,
+    pricePerMeter: 'Rp 150.000',
+    unit: '/ m² luas bangunan',
+    description:
+      'Paket standar konstruksi terlengkap agar kontraktor atau mandor bekerja dengan presisi mutlak tanpa risiko bongkar pasang.',
+    deliverables: [
+      'Semua output Paket Desain Arsitektur',
+      'Render 3D Eksterior & Interior Ruang Utama',
+      'Gambar Arsitektur Detail (Pola lantai, plafon & kusen kayu)',
+      'Gambar Struktur Lengkap (Pondasi, balok, kolom & atap)',
+      'Gambar MEP (Instalasi listrik, titik lampu & sanitasi/plumbing)',
+      'Rencana Anggaran Biaya (RAB) terperinci & volume material',
+      'Rencana Kerja & Syarat Teknis (RKS)'
+    ],
+    recommendedFor:
+      'Membangun rumah baru dari nol dengan kepastian teknis dan kontrol biaya transparan.',
+    ctaText: 'PILIH PAKET KOMPLIT DED',
+    waMessage:
+      'Halo Garis AS Studio, saya ingin berkonsultasi mengenai Paket Komplit Siap Bangun DED (Rp 150.000/m²). Bagaimana tahapan awal dan kelengkapan dokumennya?'
+  },
+
+  {
+    id: 'all-in-interior',
+    name: 'Paket Eksklusif All-In',
+    badge: 'Arsitektur + Interior',
+    popular: false,
+    pricePerMeter: 'Rp 250.000',
+    unit: '/ m² luas bangunan',
+    description:
+      'Solusi paripurna dari wujud fasad terluar hingga kehangatan detail interior kayu kustom dan pendampingan di lapangan.',
+    deliverables: [
+      'Semua output Paket Komplit Siap Bangun (DED)',
+      'Desain Interior Menyeluruh seluruh ruangan utama',
+      'Render 3D Interior Fotorealistik resolusi tinggi',
+      'Gambar Kerja Furniture Kustom (Wardrobe, kitchen set, partisi)',
+      'Kurasi langsung sampel kayu (Jati/Ulin/Merbau) & material',
+      'Rencana Anggaran Biaya (RAB) Khusus Interior',
+      'Pendampingan & supervisi berkala selama masa konstruksi'
+    ],
+    recommendedFor:
+      'Hunian mewah bernilai seni tinggi dengan keselarasan total antara arsitektur dan interior.',
+    ctaText: 'PILIH PAKET EKSKLUSIF',
+    waMessage:
+      'Halo Garis AS Studio, saya berminat dengan Paket Eksklusif All-In (Rp 250.000/m²) yang mencakup arsitektur, interior lengkap, dan supervisi. Boleh diskusi lebih lanjut?'
+  }
+];
+
+const whatsappNumber = '6281234567890';
+
+const getWhatsAppUrl = (message) =>
+  `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+---
+
+<section
+  id="pricing-section"
+  class="py-20 sm:py-24 bg-[#f4f6fa] border-t border-b border-slate-200/80 text-neutral-900"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto space-y-3 mb-14 sm:mb-16">
+      <p
+        class="text-xs sm:text-sm font-bold tracking-[0.25em] text-[#253457] uppercase flex items-center justify-center gap-2"
+      >
+        <span>—</span>
+        <span>BIAYA JASA DESAIN</span>
+        <span>—</span>
+      </p>
+
+      <h2
+        id="pricing-heading"
+        class="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-neutral-950 font-display leading-[1.15]"
+      >
+        Pilihan Paket Desain <br class="hidden sm:inline" />
+        <span class="text-[#253457]">Transparan & Terukur</span>
+      </h2>
+
+      <p class="text-sm sm:text-base text-neutral-600 leading-relaxed font-light pt-1">
+        Investasi desain rumah yang jelas tanpa biaya tersembunyi. Disesuaikan dengan
+        tahapan perencanaan, kebutuhan izin, dan kesiapan konstruksi hunian Anda.
+      </p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-14">
+
+      {PRICING_TIERS.map((tier) => (
+        <div
+          class={`relative rounded-xs flex flex-col justify-between transition-all duration-300 ${
+            tier.popular
+              ? 'bg-[#253457] text-white border-2 border-[#3d5486] shadow-2xl lg:-translate-y-2'
+              : 'bg-white text-neutral-900 border border-slate-200 shadow-sm hover:shadow-md'
+          }`}
+        >
+
+          <!-- Popular Ribbon -->
+          {tier.popular && (
+            <div
+              class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1
+              bg-white text-[#253457] text-[11px] font-extrabold
+              tracking-widest uppercase rounded-xs shadow-md border
+              border-slate-200 flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-3.5 h-3.5"
+              >
+                <path
+                  d="M12 2l1.7 6.3L20 10l-6.3 1.7L12 18l-1.7-6.3L4 10l6.3-1.7L12 2z"
+                />
+              </svg>
+
+              <span>{tier.badge}</span>
+            </div>
+          )}
+
+          <div class="p-7 sm:p-8">
+
+            <!-- Badge -->
+            {!tier.popular && tier.badge && (
+              <div class="mb-3">
+                <span
+                  class="inline-block px-2.5 py-1 text-[10px] font-extrabold
+                  tracking-widest uppercase bg-slate-100 text-[#253457]
+                  rounded-xs"
+                >
+                  {tier.badge}
+                </span>
+              </div>
+            )}
+
+            <!-- Tier Name -->
+            <h3
+              class={`text-xl sm:text-2xl font-bold font-display uppercase tracking-tight mb-2 ${
+                tier.popular ? 'text-white' : 'text-neutral-950'
+              }`}
+            >
+              {tier.name}
+            </h3>
+
+            <!-- Description -->
+            <p
+              class={`text-xs sm:text-sm leading-relaxed font-light mb-6 min-h-[44px] ${
+                tier.popular ? 'text-slate-200' : 'text-neutral-600'
+              }`}
+            >
+              {tier.description}
+            </p>
+
+            <!-- Price -->
+            <div
+              class={`pb-6 mb-6 border-b ${
+                tier.popular ? 'border-white/15' : 'border-slate-100'
+              }`}
+            >
+              <div class="flex items-baseline gap-1.5">
+                <span
+                  class={`text-3xl sm:text-4xl font-extrabold font-display tracking-tight ${
+                    tier.popular ? 'text-white' : 'text-[#253457]'
+                  }`}
+                >
+                  {tier.pricePerMeter}
+                </span>
+              </div>
+
+              <p
+                class={`text-xs mt-1 ${
+                  tier.popular ? 'text-slate-300' : 'text-neutral-500'
+                }`}
+              >
+                {tier.unit}
+              </p>
+            </div>
+
+            <!-- Deliverables -->
+            <div class="space-y-3 mb-8">
+
+              <p
+                class={`text-xs font-bold uppercase tracking-wider ${
+                  tier.popular ? 'text-white' : 'text-[#253457]'
+                }`}
+              >
+                Dokumen & Layanan yang Didapat:
+              </p>
+
+              <ul class="space-y-2.5">
+                {tier.deliverables.map((item) => (
+                  <li class="flex items-start gap-2.5 text-xs sm:text-sm leading-snug">
+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      class={`w-4 h-4 shrink-0 mt-0.5 ${
+                        tier.popular ? 'text-white' : 'text-[#253457]'
+                      }`}
+                    >
+                      <path d="m5 12 4 4L19 6" />
+                    </svg>
+
+                    <span
+                      class={
+                        tier.popular
+                          ? 'text-slate-100 font-light'
+                          : 'text-neutral-700 font-light'
+                      }
+                    >
+                      {item}
+                    </span>
+
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Recommended For -->
+            <div
+              class={`p-3.5 rounded-xs text-xs mb-2 ${
+                tier.popular
+                  ? 'bg-[#1b2640] border border-white/15 text-slate-200'
+                  : 'bg-slate-50 border border-slate-200/80 text-neutral-600'
+              }`}
+            >
+              <span
+                class={`font-bold text-[11px] uppercase tracking-wider block mb-0.5 ${
+                  tier.popular ? 'text-white' : 'text-[#253457]'
+                }`}
+              >
+                Ideal Untuk:
+              </span>
+
+              <p class="font-light leading-relaxed">
+                {tier.recommendedFor}
+              </p>
+            </div>
+
+          </div>
+
+          <!-- CTA -->
+          <div class="p-7 sm:p-8 pt-0">
+            <a
+              href={getWhatsAppUrl(tier.waMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`w-full py-3.5 sm:py-4 px-4 rounded-xs text-xs sm:text-sm
+              font-extrabold uppercase tracking-wider flex items-center
+              justify-center gap-2 transition-all duration-200 ${
+                tier.popular
+                  ? 'bg-white hover:bg-slate-100 text-[#253457] shadow-lg hover:shadow-xl font-black'
+                  : 'bg-[#253457] hover:bg-[#1a253e] text-white shadow-xs'
+              }`}
+            >
+              <!-- WhatsApp Icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-4 h-4 shrink-0"
+              >
+                <path
+                  d="M20.5 3.5A11.8 11.8 0 0012.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.8L.2 24l6.6-1.7c1.6.9 3.4 1.3 5.2 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.4-8.3z"
+                />
+              </svg>
+
+              <span>{tier.ctaText}</span>
+            </a>
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+
+    <!-- Bottom Consultation Banner -->
+    <div
+      class="bg-white border border-slate-200 rounded-xs p-6 sm:p-8
+      flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs"
+    >
+
+      <div class="space-y-1.5 text-center md:text-left">
+
+        <div
+          class="inline-flex items-center gap-2 text-[#253457]
+          text-xs font-bold uppercase tracking-wider"
+        >
+          <!-- Shield Icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="w-4 h-4"
+          >
+            <path
+              d="M12 3l8 4v5c0 5-3.4 8.8-8 10-4.6-1.2-8-5-8-10V7l8-4z"
+            />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+
+          <span>KONSULTASI AWAL 100% GRATIS</span>
+        </div>
+
+        <h4 class="text-base sm:text-lg font-bold font-display text-neutral-950">
+          Belum Mengetahui Luas Bangunan atau Butuh Paket Kustom?
+        </h4>
+
+        <p class="text-xs sm:text-sm text-neutral-600 font-light max-w-2xl">
+          Kirimkan ukuran lahan Anda, tim arsitek kami akan membantu menghitungkan
+          estimasi kebutuhan ruang, konsep awal denah, serta simulasi biayanya
+          secara langsung.
+        </p>
+
+      </div>
+
+      <a
+        href={getWhatsAppUrl(
+          'Halo Garis AS Studio, saya ingin berkonsultasi mengenai estimasi luas dan rencana desain rumah saya.'
+        )}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="shrink-0 px-6 py-3.5 border border-[#253457]
+        text-[#253457] hover:bg-[#253457] hover:text-white
+        font-extrabold text-xs uppercase tracking-wider rounded-xs
+        transition-colors flex items-center gap-2"
+      >
+        <span>HUBUNGI ARSITEK KAMI</span>
+
+        <!-- Arrow Icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="w-4 h-4"
+        >
+          <path d="M5 12h14" />
+          <path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
+
+    </div>
+
+  </div>
+</section>
