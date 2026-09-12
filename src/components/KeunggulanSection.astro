@@ -1,0 +1,116 @@
+---
+import {
+  TreePine,
+  Sparkles,
+  Layers,
+  Compass,
+  FileSpreadsheet,
+  HardHat,
+} from "lucide-react";
+
+const FEATURES = [
+  {
+    id: "wood-specialist",
+    icon: TreePine,
+    title: "Spesialis Rumah Kayu Tropis",
+    description:
+      "Perpaduan kayu solid pilihan dengan arsitektur modern yang tahan cuaca, sejuk, dan minim perawatan.",
+  },
+  {
+    id: "custom-design",
+    icon: Compass,
+    title: "Desain 100% Kustom",
+    description:
+      "Setiap tata ruang dan fasad dirancang khusus sesuai luas lahan, orientasi arah matahari, dan kebutuhan keluarga.",
+  },
+  {
+    id: "photorealistic-3d",
+    icon: Sparkles,
+    title: "Visual 3D Realistis",
+    description:
+      "Render visual fotorealistik interior dan eksterior siang-malam sebelum proses pembangunan fisik dimulai.",
+  },
+  {
+    id: "complete-ded",
+    icon: Layers,
+    title: "Gambar Kerja Teknis (DED)",
+    description:
+      "Dokumen teknis lengkap arsitektur, struktur pondasi, dan instalasi MEP sebagai panduan presisi tukang.",
+  },
+  {
+    id: "transparent-rab",
+    icon: FileSpreadsheet,
+    title: "RAB Akurat & Transparan",
+    description:
+      "Estimasi rincian volume material dan anggaran biaya terukur agar pembangunan terhindar dari overbudget.",
+  },
+  {
+    id: "supervision-support",
+    icon: HardHat,
+    title: "Pendampingan Konstruksi",
+    description:
+      "Dukungan konsultasi teknis, kurasi material kayu, dan pengawasan berkala demi hasil sesuai rancangan.",
+  },
+];
+---
+
+<section
+  id="keunggulan-section"
+  class="py-16 sm:py-20 bg-[#fbf9f5] border-b border-neutral-200/70 text-neutral-900"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto space-y-2.5 mb-12 sm:mb-14">
+      <p
+        class="text-xs sm:text-sm font-bold tracking-[0.25em] text-[#193570] uppercase flex items-center justify-center gap-2"
+      >
+        <span>—</span>
+        <span>MENGAPA MEMILIH KAMI</span>
+        <span>—</span>
+      </p>
+
+      <h2
+        id="keunggulan-heading"
+        class="text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-neutral-950 font-display leading-[1.15]"
+      >
+        Keunggulan Jasa Desain Rumah <br class="hidden sm:inline" />
+        <span class="text-[#193570]">Garis AS Studio</span>
+      </h2>
+
+      <p
+        class="text-sm sm:text-base text-neutral-600 leading-relaxed font-light pt-1"
+      >
+        Standar profesional perancangan arsitektur dan interior kayu modern yang
+        mengutamakan kenyamanan, ketepatan struktur, dan kepastian biaya.
+      </p>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+      {
+        FEATURES.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <div
+              key={item.id}
+              class="bg-white p-6 sm:p-7 rounded-xs border border-neutral-200/80 shadow-xs flex flex-col justify-start"
+            >
+              <div class="w-12 h-12 rounded-xs bg-neutral-900 text-amber-300 flex items-center justify-center mb-5 shrink-0">
+                <Icon class="w-6 h-6" />
+              </div>
+
+              <h3 class="text-base sm:text-lg font-bold font-display text-neutral-950 mb-2 leading-snug">
+                {item.title}
+              </h3>
+
+              <p class="text-xs sm:text-sm text-neutral-600 leading-relaxed font-light">
+                {item.description}
+              </p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
